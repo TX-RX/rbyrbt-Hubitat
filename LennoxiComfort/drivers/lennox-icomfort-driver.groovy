@@ -2692,9 +2692,10 @@ List cloudPollOptions() {
 // Utility methods
 def convertTemperature(tempF, tempC) {
     if (getTemperatureScale() == "C") {
-        return tempC ?: fahrenheitToCelsius(tempF)
+        if (tempC != null) return new BigDecimal(tempC.toString()).setScale(1, BigDecimal.ROUND_HALF_UP)
+        return fahrenheitToCelsius(tempF)
     }
-    return tempF
+    return tempF != null ? new BigDecimal(tempF.toString()).setScale(0, BigDecimal.ROUND_HALF_UP) : null
 }
 
 BigDecimal fahrenheitToCelsius(BigDecimal f) {

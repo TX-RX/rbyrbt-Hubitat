@@ -128,7 +128,8 @@ void refresh() {
 // Update methods called by parent for different sensor types
 
 void updateTemperature(BigDecimal tempF, BigDecimal tempC) {
-    def temp = getTemperatureScale() == "C" ? tempC : tempF
+    def raw = getTemperatureScale() == "C" ? tempC : tempF
+    def temp = raw != null ? raw.setScale(getTemperatureScale() == "C" ? 1 : 0, BigDecimal.ROUND_HALF_UP) : null
     if (temp != null && device.currentValue("temperature") != temp) {
         sendEvent(name: "temperature", value: temp, unit: getTemperatureScale(), 
                   descriptionText: "${device.displayName} temperature is ${temp}°${getTemperatureScale()}")
