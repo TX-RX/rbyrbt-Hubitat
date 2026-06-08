@@ -119,7 +119,7 @@ void refresh() {
 // Only send event when value changed to avoid "Too many events pending" when message pump floods updates
 private void sendEventIfChanged(String name, value, String unit = null, String descriptionText = null) {
     def current = device.currentValue(name)
-    boolean same = (current == value) || (value != null && current != null && valuesEqualAsNumber(current, value))
+    boolean same = (current == value) || (value != null && current != null && valuesEqualAsNumber(current, value) && current.toString() == value.toString())
     if (same) return
     Map evt = [name: name, value: value]
     if (unit) evt.unit = unit
